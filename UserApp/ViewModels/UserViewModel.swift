@@ -15,9 +15,9 @@ enum UsersState {
 final class UsersViewModel {
     private(set) var state: UsersState = .idle
 
-    private let apiClient: APIClient
+    private let apiClient: APIClientProvider
 
-    init(apiClient: APIClient) {
+    init(apiClient: APIClientProvider) {
         self.apiClient = apiClient
     }
 
