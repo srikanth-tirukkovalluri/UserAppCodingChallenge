@@ -3,8 +3,13 @@
 import Foundation
 
 struct APIClient: APIClientProvider {
+    private let session: URLSession
+
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
+
     func fetch<T: Decodable & Sendable>(url: URL) async throws -> T {
-        let session = URLSession.shared
         let (data, response) = try await session.data(from: url)
         
         // Validate HTTP status code
