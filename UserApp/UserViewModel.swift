@@ -27,6 +27,7 @@ final class UsersViewModel: ObservableObject {
             state = .loaded(users)
         } catch {
             state = .failed(error)
+            print("Error fetching users: \(error)")
         }
     }
 }
