@@ -10,12 +10,14 @@ enum UsersState {
     case failed(Error)
 }
 
-final class UsersViewModel: ObservableObject {
-    @Published private(set) var state: UsersState = .idle
+@Observable
+@MainActor
+final class UsersViewModel {
+    private(set) var state: UsersState = .idle
 
-    private let apiClient: UsersAPIClient
+    private let apiClient: APIClient
 
-    init(apiClient: UsersAPIClient) {
+    init(apiClient: APIClient) {
         self.apiClient = apiClient
     }
 
@@ -23,7 +25,11 @@ final class UsersViewModel: ObservableObject {
         state = .loading
 
         do {
-            let users = try await apiClient.fetchUsers()
+            guard let url = APIEndpoints.getUsers.url else {
+                throw NetworkError.invalidURL
+            }
+            
+            let users: [User] = try await apiClient.fetch(url: url)
             state = .loaded(users)
         } catch {
             state = .failed(error)

@@ -2,7 +2,8 @@
 
 import Foundation
 
-struct User: Decodable, Identifiable {
+nonisolated
+struct User: Decodable, Identifiable, Sendable {
     let id: Int
     let name: String
     let username: String
